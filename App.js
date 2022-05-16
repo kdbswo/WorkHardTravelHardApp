@@ -4,9 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Pressable,
   TextInput,
   Alert,
   ScrollView,
@@ -29,11 +26,13 @@ export default function App() {
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
   const saveToDos = async (toSave) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-  };
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave)); //object를 string으로 바꿔주어야함
+  };;
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
-    setToDos(JSON.parse(s));
+    if (s) {
+      setToDos(JSON.parse(s));  // string을 object로 바꿔주고 state에 전달
+    }
   };
   const addToDo = async () => {
     if (text === "") {
@@ -94,7 +93,7 @@ export default function App() {
         />
       </View>
       <ScrollView>
-        {Object.keys(toDos).map((key) =>
+        {Object.keys(toDos).map((key) =>          //boject의 key들을 배열로 반환후 map()을 적용
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
               <Text style={styles.toDoText}>{toDos[key].text}</Text>

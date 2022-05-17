@@ -27,11 +27,11 @@ export default function App() {
   const onChangeText = (payload) => setText(payload);
   const saveToDos = async (toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave)); //object를 string으로 바꿔주어야함
-  };;
+  };
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
     if (s) {
-      setToDos(JSON.parse(s));  // string을 object로 바꿔주고 state에 전달
+      setToDos(JSON.parse(s)); // string을 object로 바꿔주고 state에 전달
     }
   };
   const addToDo = async () => {
@@ -65,7 +65,11 @@ export default function App() {
       <View style={styles.header}>
         <TouchableOpacity onPress={work}>
           <Text
-            style={{ ...styles.btnText, color: working ? "white" : theme.grey }}
+            style={{
+              fontSize: 38,
+              fontWeight: "600",
+              color: working ? "white" : theme.grey,
+            }}
           >
             Work
           </Text>
@@ -73,7 +77,8 @@ export default function App() {
         <TouchableOpacity onPress={travel}>
           <Text
             style={{
-              ...styles.btnText,
+              fontSize: 38,
+              fontWeight: "600",
               color: !working ? "white" : theme.grey,
             }}
           >
@@ -93,15 +98,18 @@ export default function App() {
         />
       </View>
       <ScrollView>
-        {Object.keys(toDos).map((key) =>          //boject의 key들을 배열로 반환후 map()을 적용
-          toDos[key].working === working ? (
-            <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
-              <TouchableOpacity onPress={() => deleteToDo(key)}>
-                <Fontisto name="trash" size={15} color="gray" />
-              </TouchableOpacity>
-            </View>
-          ) : null
+        {Object.keys(toDos).map(
+          (
+            key //boject의 key들을 배열로 반환후 map()을 적용
+          ) =>
+            toDos[key].working === working ? (
+              <View style={styles.toDo} key={key}>
+                <Text style={styles.toDoText}>{toDos[key].text}</Text>
+                <TouchableOpacity onPress={() => deleteToDo(key)}>
+                  <Fontisto name="trash" size={15} color="gray" />
+                </TouchableOpacity>
+              </View>
+            ) : null
         )}
       </ScrollView>
     </View>
@@ -119,10 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 100,
   },
-  btnText: {
-    fontSize: 38,
-    fontWeight: "600",
-  },
+  btnText: {},
   input: {
     backgroundColor: "white",
     paddingVertical: 15,

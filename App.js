@@ -12,6 +12,7 @@ import { Fontisto } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { theme } from "./colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native-web";
 
 const STORAGE_KEY = "@toDos";
 
@@ -44,19 +45,29 @@ export default function App() {
     setText("");
   };
   const deleteToDo = async (key) => {
-    Alert.alert("Delete To Do", "Are you sure?", [
-      { text: "cancel" },
-      {
-        text: "I'm sure",
-        style: "destructive",
-        onPress: () => {
-          const newToDos = { ...toDos };
-          delete newToDos[key];
-          setToDos(newToDos);
-          saveToDos(newToDos);
+    if (Platform.OS === "web") {
+      const ok = confirm("Do you want to delete this To Do?");
+      if (ok) {
+        const newToDos = { ...toDos };
+        delete newToDos[key];
+        setToDos(newToDos);
+        saveToDos(newToDos);
+      }
+    } else {
+      Alert.alert("Delete To Do", "Are you sure?", [
+        { text: "cancel" },
+        {
+          text: "I'm sure",
+          style: "destructive",
+          onPress: () => {
+            const newToDos = { ...toDos };
+            delete newToDos[key];
+            setToDos(newToDos);
+            saveToDos(newToDos);
+          },
         },
-      },
-    ]);
+      ]);
+    }
     return;
   };
   return (
@@ -127,7 +138,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 100,
   },
-  btnText: {},
   input: {
     backgroundColor: "white",
     paddingVertical: 15,
